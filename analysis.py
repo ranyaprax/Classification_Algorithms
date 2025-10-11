@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn import svm
 from sklearn import metrics
 
+# This file is for analysis and research of a few algorithms before choosing
+
 training_data = pd.read_csv('wildfires_training.csv')
 test_data = pd.read_csv('wildfires_test.csv')
 
