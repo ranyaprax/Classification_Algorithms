@@ -5,6 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.exceptions import ConvergenceWarning
+import warnings
 
 training_data = pd.read_csv('wildfires_training.csv')
 test_data = pd.read_csv('wildfires_test.csv')
@@ -79,3 +81,14 @@ plt.ylabel('Prediction', fontsize=13)
 plt.xlabel('Actual', fontsize=13)
 plt.title('C Tuning LR - Fire Prediction vs Actual', fontsize=17)
 plt.show()
+
+# finding best max_iter for convergence
+max_iter = 100
+for max_iter in range(100, 1000, 10):
+    clf = LogisticRegression(max_iter=max_iter)
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always", ConvergenceWarning)
+        clf.fit(x_train, y_train)
+        if not any(isinstance(wi.message, ConvergenceWarning) for wi in w):
+            print(f"Converged with max_iter={max_iter}")
+            break
