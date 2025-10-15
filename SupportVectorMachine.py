@@ -41,3 +41,63 @@ plt.xlabel('Kernels')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
+
+
+# Tuning hyperparameter 2: C
+c_values = np.arange(1,100)
+
+training_accuracy = []
+test_accuracy = []
+for i in c_values:
+    clf = svm.SVC(C=i)
+
+    clf.fit(x_train, y_train)
+    prediction = clf.predict(x_test)
+    training_accuracy.append(clf.score(x_train, y_train))
+    test_accuracy.append(clf.score(x_test, y_test))
+
+plt.plot(c_values,training_accuracy, marker = 'o', color = 'b',label='training accuracy')
+plt.plot(c_values,test_accuracy, marker = 'o', color = 'r',label='testing accuracy')
+plt.xlabel('c_parameter')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+diff = np.array(training_accuracy) - np.array(test_accuracy)
+min_idx = np.argmin(diff)
+
+clf= svm.SVC(C=c_values[min_idx])
+clf.fit(x_train, y_train)
+
+prediction_c_tuning = clf.predict(x_test)
+print("C Tuning using default kernel - Logistic Regression Accuracy:", metrics.accuracy_score(y_test, prediction_c_tuning))
+
+
+c_values = np.arange(1,100)
+
+training_accuracy = []
+test_accuracy = []
+for i in c_values:
+    clf = svm.SVC(kernel='linear', C=i)
+
+    clf.fit(x_train, y_train)
+    prediction = clf.predict(x_test)
+    training_accuracy.append(clf.score(x_train, y_train))
+    test_accuracy.append(clf.score(x_test, y_test))
+
+plt.plot(c_values,training_accuracy, marker = 'o', color = 'b',label='training accuracy')
+plt.plot(c_values,test_accuracy, marker = 'o', color = 'r',label='testing accuracy')
+plt.xlabel('c_parameter')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+diff = np.array(training_accuracy) - np.array(test_accuracy)
+min_idx = np.argmin(diff)
+
+clf= svm.SVC(kernel='linear', C=c_values[min_idx])
+clf.fit(x_train, y_train)
+
+prediction_c_tuning = clf.predict(x_test)
+print("Best C value: ", c_values[min_idx])
+print("C Tuning using linear kernel - Logistic Regression Accuracy:", metrics.accuracy_score(y_test, prediction_c_tuning))
