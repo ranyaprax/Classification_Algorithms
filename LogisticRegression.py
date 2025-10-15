@@ -18,8 +18,20 @@ y_train = training_data['fire']
 x_test = test_data.drop("fire", axis=1)
 y_test = test_data['fire']
 
+# finding best max_iter for convergence
+max_iter = 100
+for max_iter in range(100, 1000, 10):
+    clf = LogisticRegression(max_iter=max_iter)
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always", ConvergenceWarning)
+        clf.fit(x_train, y_train)
+        if not any(isinstance(wi.message, ConvergenceWarning) for wi in w):
+            print(f"Converged with max_iter={max_iter}")
+            break
+
+
 # Default
-lr = LogisticRegression(max_iter=1000)
+lr = LogisticRegression(max_iter=370)
 lr.fit(x_train, y_train)
 
 prediction_default = lr.predict(x_test)
@@ -63,7 +75,7 @@ plt.show()
 diff = np.array(training_accuracy) - np.array(test_accuracy)
 min_idx = np.argmin(diff)
 
-lr = LogisticRegression(max_iter=1000, C=c_values[min_idx])
+lr = LogisticRegression(max_iter=370, C=c_values[min_idx])
 lr.fit(x_train, y_train)
 
 prediction_c_tuning = lr.predict(x_test)
@@ -83,17 +95,6 @@ plt.ylabel('Prediction', fontsize=13)
 plt.xlabel('Actual', fontsize=13)
 plt.title('C Tuning LR - Fire Prediction vs Actual', fontsize=17)
 plt.show()
-
-# finding best max_iter for convergence
-max_iter = 100
-for max_iter in range(100, 1000, 10):
-    clf = LogisticRegression(max_iter=max_iter)
-    with warnings.catch_warnings(record=True) as w:
-        warnings.simplefilter("always", ConvergenceWarning)
-        clf.fit(x_train, y_train)
-        if not any(isinstance(wi.message, ConvergenceWarning) for wi in w):
-            print(f"Converged with max_iter={max_iter}")
-            break
 
 # Tuning hyperparameter 2: Solver + Penalty
 
