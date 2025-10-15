@@ -1,5 +1,3 @@
-from turtledemo.clock import current_day
-
 import numpy as np
 import pandas as pd
 from sklearn import metrics
