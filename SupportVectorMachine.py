@@ -50,7 +50,7 @@ plt.show()
 
 
 # Tuning hyperparameter 2: C
-# Using default kernel
+# 1. Using default kernel
 c_values = np.arange(1,100)
 
 test_accuracy = []
@@ -72,10 +72,10 @@ plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
 
-print("The highest accuracy of the default Kernel is", np.max(test_accuracy), "when C is", c_values[np.argmax(test_accuracy)])
-print("The highest accuracy of the default Kernel is", np.max(training_accuracy), "when C is", c_values[np.argmax(training_accuracy)])
+print("The highest accuracy of the default Kernel is", np.max(test_accuracy), "when C is", c_values[np.argmax(test_accuracy)], "in the training set")
+print("The highest accuracy of the default Kernel is", np.max(training_accuracy), "when C is", c_values[np.argmax(training_accuracy)], "in the training set")
 
-# Using the best Kernel - linear
+# 2. Using the best Kernel - linear
 c_values = np.arange(1,100)
 
 test_accuracy = []
